@@ -1,4 +1,3 @@
-#line1
 server.port=4565
 
 #internal resource view resolver
