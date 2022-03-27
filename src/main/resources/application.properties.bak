@@ -1,5 +1,8 @@
-#line1 from  branch b merged
-
+<<<<<<< HEAD
+#line1 from  branch b
+=======
+#line1
+>>>>>>> 4a329f00052974b23ec3c0533dd23b7713c7c5dd
 server.port=4565
 
 #internal resource view resolver
