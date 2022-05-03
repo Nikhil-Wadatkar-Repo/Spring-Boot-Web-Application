@@ -1,5 +1,7 @@
 package com.bs.login;
 
+import java.util.LinkedHashSet;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.stereotype.Service;
@@ -15,44 +17,38 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.bs.deal.Deal;
 import com.bs.deal.DealController;
 
-@Controller
-public class LoginController {
+@RestController
+@RequestMapping("/rest")
+public class LoginRestController {
 	@Autowired
 	private LoginServiceI service;
 	@Autowired
 	private DealController dealController;
-	
-	@GetMapping("/")
-	public ModelAndView loadForm() {
-		ModelAndView mav=new ModelAndView();
-		mav.addObject("logindetails", new LoginDetails());
-		mav.setViewName("LoginPage");
-		return mav;
+
+	@GetMapping("/getLogindetail")
+	public LoginDetails get() {
+		return new LoginDetails(12, "user11", "password", null, new Deal(15, "product1", "12/12/2022", "12/12/2022", "account",
+				"MH", "12/12/2022", "de", new LinkedHashSet<>()));
+		 
 	}
-	
-	@GetMapping("/dash")
-	public ModelAndView dash() {
-		ModelAndView mav=new ModelAndView();
-		mav.addObject("deals", dealController.getDealById(159));
-		mav.setViewName("DashBoard");
-		return mav;
-	}
-	
+
 	@PostMapping("/isLogined")
-	public  ModelAndView isLogined(@ModelAttribute LoginDetails logins) {
-		ModelAndView mav=new ModelAndView();
+	public ModelAndView isLogined(@ModelAttribute LoginDetails logins) {
+		ModelAndView mav = new ModelAndView();
 		if (service.isLogined(logins)) {
-			mav.addObject("deals", dealController.getDealById(159));
+			mav.addObject("deals", dealController.getDealById(logins.getDeal().getDealId()));
 			mav.setViewName("DashBoard");
 			return mav;
 		} else
 			mav.setViewName("Error");
-			return mav;
+		return mav;
 	}
+
 	@PostMapping("/createLogin")
-	public @ResponseBody  LoginDetails createLogin(@RequestBody LoginDetails logins) {
+	public @ResponseBody LoginDetails createLogin(@RequestBody LoginDetails logins) {
 		return service.createLoginDetails(logins);
 	}
 
@@ -61,7 +57,6 @@ public class LoginController {
 		return service.updateLoginDetails(logins);
 	}
 
-	
 	@GetMapping("/getToken/{id}")
 	public @ResponseBody LoginDetails getToken(@PathVariable("id") int loginId) {
 		return service.getToken(loginId);

@@ -1,11 +1,15 @@
 package com.bs.login;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+
+import org.hibernate.annotations.GenericGenerator;
 
 import com.bs.deal.Deal;
 
@@ -13,13 +17,15 @@ import com.bs.deal.Deal;
 @Table
 public class LoginDetails {
 	@Id
+	@Column(name = "loginId")
+	@GenericGenerator(name = "gen1",strategy = "increment")
+	@GeneratedValue(generator = "gen1")
 	private int loginId;
 	private String username;
 	private String password;
 	private String token;
 
-	@OneToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name = "deal_login_id")
+	@OneToOne(targetEntity = Deal.class,cascade  = CascadeType.ALL,mappedBy = "loginDetails")
 	private Deal deal;
 
 	public LoginDetails(int loginId, String username, String password, String token, Deal deal) {

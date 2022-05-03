@@ -48,9 +48,6 @@ public class LoginServiceImpl implements LoginServiceI {
 				flag=true; 
 			break;
 		}
-		
-		
-
 		return flag;
 	}
 
