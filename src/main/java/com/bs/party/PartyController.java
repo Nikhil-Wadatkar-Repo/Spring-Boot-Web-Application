@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.bs.exception.UserNotFoundException;
+
 @RestController
 public class PartyController {
 
@@ -20,31 +22,14 @@ public class PartyController {
 	
 	@GetMapping("/get")
 	public PartyDetails get() {
-		return new PartyDetails(12,"party1", "part1@gmail.com", "1234567899", "party type 1", "larven", "morshi", "morshi");
+		throw new UserNotFoundException("gela");
+//		return new PartyDetails(12,"party1", "part1@gmail.com", "1234567899", "party type 1", "larven", "morshi", "morshi");
 	}
 	
-	@PostMapping("/createPartyDetails")
-	public PartyDetails createPartyDetails(@RequestBody PartyDetails obj) {
-		return service.createPartyDetails(obj);
-	}
-	@PutMapping("/updatePartyDetails")
-	public PartyDetails updatePartyDetails(@RequestBody PartyDetails obj) {
-		return service.updatePartyDetails(obj);
-	}
 	
-	@GetMapping("/delete/{id}")
-	public String deletePartyDetailsById(@PathVariable("id") int surgeonId) {
-		service.deletePartyDetailsById(surgeonId);
-		return "Deleted";
-	}
 	@GetMapping("/getAll")
 	public List<PartyDetails> getAllPartyDetails() {
 		return service.getAllPartyDetails();
-	}
-	
-	@GetMapping("getAll/{branch}")
-	public List<PartyDetails> getCustom(@PathVariable("branch") String branch) {
-		return repo.getbyBranch(branch);
 	}
 	
 	
